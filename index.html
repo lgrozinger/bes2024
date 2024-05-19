@@ -1,0 +1,185 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/dist/reveal.css">
+    <link rel="stylesheet" href="/ebiofilm/styles.css">
+    <link rel="stylesheet" href="/dist/theme/solarized.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+	  <div>
+	    <h3>Synthetic biology in <i>Geobacter sulfurreducens</i></h3>
+	    <h2>Implementation of an electrogenetic oscillator using an NADH/NAD sensor</h2>
+	  </div>
+	  <div class="three_columns">
+	    <div style="text-align:center; margin-top:1em">
+	      <p>Lewis Grozinger<sup><small>1</small></sup></p>
+	      <p>Lorea Alejaldre<sup><small>1</small></sup></p>
+	      <p>Ángel Goñi-Moreno<sup><small>1</small></sup></p>
+	      <p>Sara Mozo Pacheco<sup><small>2, 3</small></sup></p>
+	      <p>Abraham Esteve-Nuñez<sup><small>2, 3</small></sup></p>
+	    </div>
+	    <div>
+	      <img src="/ebiofilm/biocomplab.svg" style="width:100%; margin-top:1em;">
+	      <img src="/ebiofilm/logos.svg">
+	    </div>
+	    <div style="margin-top:3em">
+	      <p><small><sup>1</sup>Biocomputation group, Centre for Biotechnology and Plant Genomics, UPM (INIA/CSIC), Madrid</small></p>
+	      <p style="margin-top:1em"><small><sup>2</sup>IMDEA Water, Alcalá de Henares, Madrid, Spain</small></p>
+	      <p style="margin-top:1em"><small><sup>3</sup>Chemical Engineering Department, University of Alcala, Alcalá de Henares, Madrid, Spain</small></p>
+	    </div>
+	  </div>
+	  <a>https://github.io/lgrozinger/bes2024</a>
+	</section>
+
+	<section>
+	  <h3>A microbial electroactive biofilm system</h3>
+	  <div class="two_columns">
+	    <div>
+	      <img src="/ebiofilm/wildtype-network.svg" style="height:100%;">
+	    </div>
+	    <div>
+	      <video data-autoplay style="height:90%; width:100%; align-self:center;" src="/ebiofilm/wildtype.mp4"></video>
+	      <p><a href=" https://doi.org/10.1111/1751-7915.14153"><small>Grozinger L, Heidrich E, Goñi-Moreno. An electrogenetic toggle switch model. Microbiol Biotechnol. 2022</small></a></p>
+	    </div>
+	  </div>
+	</section>
+
+	<section>
+	  <h3>Objective: Oscillations</h3>
+	  <div class="two_columns">
+	    <div>
+	      <p style="text-align:left; margin-top:1em;">Modify the genome of Geobacter (synthetic gene network)</p>
+	      <p style="text-align:left; margin-top:1em;">To change the behaviour of Geobacter biofilm</p>
+	      <p style="text-align:left; margin-top:1em;">From stable steady-state to stable oscillations</p>
+	      <video data-autoplay style="width:90%" src="/ebiofilm/dynamical.mp4"></video>
+	    </div>
+	    <div style="text-align:center">
+	      <video data-autoplay style="height:90%; align-self:center;" src="/ebiofilm/repressilator-classic.mp4"></video>
+	      <p><a href="https://doi.org/10.1038/35002125"><small>Elowitz, M., Leibler, S. A synthetic oscillatory network of transcriptional regulators. Nature 403, 335–338 (2000)</small></a></p>
+	    </div>
+	  </div>
+	</section>
+
+	<section>
+	  <h3>Synthetic electrogenetic network: switches</h3>
+	  <div class="two_columns">
+	    <div>
+	      <img src="/ebiofilm/lovely-plasmids.svg">
+	      <p><a href="https://doi.org/10.1007/s10295-016-1836-5"><small>Ueki T, Nevin KP, Woodard TL, Lovley DR. Genetic switches and related tools for controlling gene expression and electrical outputs of Geobacter sulfurreducens. J Ind Microbiol Biotechnol. 2016</small></a></p>
+	    </div>
+	    <video data-autoplay loop src="/ebiofilm/lovely.mp4" style="height:100%"></video>
+	  </div>
+	</section>
+
+	<section>
+	  <section>
+	    <h3>Problem: synthetic electrogenetic oscillator </h3>
+	    <div class="two_columns">
+	      <div style="margin-top:1em">
+		<p style="text-align:left;">Design and build a synthetic gene network in Geobacter</p>
+		<p style="text-align:left; margin-top:1em;">Such that their biofilm produces oscillating current</p>
+		<p style="text-align:left; margin-top:1em">First attempt: repressilator + gltA</p>
+		<video data-autoplay style="align-self:center; margin-top:1em" src="/ebiofilm/gltarepressilator-diagram.mp4"></video>
+	      </div>
+	      <div>
+		<video data-autoplay style="height:100%; width:100%; align-self:center;" src="/ebiofilm/gltarepressilator.mp4"></video>
+	      </div>
+	    </div>
+	  </section>
+	  <section>
+	    <div class="two_columns">
+	      <div>
+		<p>Bacteria oscillate separately</p>
+		<p>Tiny fluctuations push them out of sync</p>
+		<p>They "cancel" each other out (interference)</p>
+		<p>But if they were coupled they would synchronise</p>
+	      </div>
+	      <div>
+		<iframe width="600" height="400" src="https://www.youtube.com/embed/Aaxw4zbULMs" title="Synchronization of Metronomes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen data-autoplay></iframe>
+	      </div>
+	    </div>
+	  </section>
+	</section>
+
+	<section>
+	  <h3>Solution: B-Rex NADH/NAD sensor</h3>
+	  <div class="two_columns">
+	    <div>
+	      <p style="text-align:left;">Rex is a repressor from Gram-positive bacteria</p>
+	      <p style="text-align:left; margin-top:1em;">When bound to NAD+ it inhibits target gene expression</p>
+	      <img src="/ebiofilm/rex-mechanism.svg", style="margin-top:1em;">
+	      <p><a href="https://doi.org/acssynbio.8b00485"><small>Liu, Y., Landick, R. and Raman, S. A Regulatory NADH/NAD+ Redox Biosensor for Bacteria. ACS Synth. Biol. (2019)</small></a></p>
+	    </div>
+	    <div>
+	      <p style="text-align:left;">We propose to use Rex to incorporate NADH into the network</p>
+	      <img src="/ebiofilm/rex-network.svg" style="width:80%">
+	    </div>
+	  </div>
+	</section>
+
+	<section>
+	  <h3>Solution: NADH/NAD coupling bacteria</h3>
+	  <div class="two_columns">
+	    <div>
+	      <p style="text-align:left;">Rex is a repressor from Gram-positive bacteria</p>
+	      <p style="text-align:left; margin-top:1em;">When bound to NAD+ it inhibits target gene expression</p>
+	      <img src="/ebiofilm/rex-mechanism.svg", style="margin-top:1em;">
+	      <p><a href="https://doi.org/acssynbio.8b00485"><small>Liu, Y., Landick, R. and Raman, S. A Regulatory NADH/NAD+ Redox Biosensor for Bacteria. ACS Synth. Biol. (2019)</small></a></p>
+	    </div>
+	    <div>
+	      <img src="/ebiofilm/rex-network-coupled.svg" style="width:100%">
+	    </div>
+	  </div>
+	</section>
+	
+	<section>
+	  <h3>Solution: coupling in action</h3>
+	  <div class="two_columns">
+	    <div style="margin-top:1em">
+	      <p style="text-align:left">NADH is part of the oscillatory network</p>
+	      <p style="text-align:left; margin-top:1em;">NADH levels get feedback from state of the biofilm</p>
+	      <p style="text-align:left; margin-top:1em;">Provides coupling between neighbouring Geobacter</p>
+	      <p style="text-align:left; margin-top:1em;"><b>Synchronises oscillations in biolfilm current</b></p>
+	      <video data-autoplay style="align-self:center; margin-top:1em" src="/ebiofilm/nadhrepressilator-diagram.mp4"></video>
+	    </div>
+	    <div>
+	      <video data-autoplay style="height:100%; width:100%; align-self:center;" src="/ebiofilm/nadhrepressilator.mp4"></video>
+	    </div>
+	  </div>
+	</section>
+
+	<section>
+	  <section>
+	    <h3>Experimental approach: circuit assembly</h3>
+	    <div>
+	      <img src="/ebiofilm/final-construct.svg" style="height:900">
+	    </div>
+	  </section>
+	  <section data-background-image="/ebiofilm/experimental-3.svg"></section>
+	  <section data-background-image="/ebiofilm/experimental-4.svg"></section>
+	</section>
+	
+	<section>
+	  <div class="two_columns">
+	    <div>
+	      <video data-autoplay loop src="/ebiofilm/bigbiofilm.mp4" style="width:100%"></video>
+	    </div>
+	    <div>
+	      <img src="/ebiofilm/acks.svg" style="height:100%">
+	    </div>
+	  </div>
+	</section>
+	
+      </div>
+    </div>
+    <script src="/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+	  width: 1920,
+	  height: 1080,
+      });
+    </script>
+  </body>
+</html>
